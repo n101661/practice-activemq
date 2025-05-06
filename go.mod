@@ -3,6 +3,7 @@ module github.com/n101661/practice-activemq
 go 1.22.4
 
 require (
+	github.com/Azure/go-amqp v1.4.0
 	github.com/goccy/go-yaml v1.17.1
 	github.com/stretchr/testify v1.10.0
 )

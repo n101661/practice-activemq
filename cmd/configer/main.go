@@ -15,17 +15,12 @@ var path = flag.String("path", "./config.yaml", "The path of the config file.")
 func main() {
 	flag.Parse()
 
-	data, err := os.ReadFile(*path)
-	if err != nil && !os.IsNotExist(err) {
-		log.Fatalf("failed to read %s file: %v", *path, err)
+	cfg, err := config.Load(*path)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	var cfg config.Config
-	if err := yaml.Unmarshal(data, &cfg); err != nil {
-		log.Fatalf("failed to unmarshal config: %v", err)
-	}
-
-	setDefault(&cfg)
+	setDefault(cfg)
 
 	file, err := os.Create(*path)
 	if err != nil {
@@ -34,7 +29,7 @@ func main() {
 	defer file.Close()
 	defer file.Sync()
 
-	data, err = yaml.Marshal(&cfg)
+	data, err := yaml.Marshal(cfg)
 	if err != nil {
 		log.Fatalf("failed to marshal config: %v", err)
 	}
