@@ -56,6 +56,9 @@ func main() {
 
 		text := "ping" + strconv.Itoa(counter)
 		msg := amqp.Message{
+			Header: &amqp.MessageHeader{
+				Durable: cfg.Provider.Message.Durable,
+			},
 			Value: text,
 		}
 		if err := sender.Send(ctx, &msg, nil); err != nil {

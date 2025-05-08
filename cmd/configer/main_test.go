@@ -15,12 +15,17 @@ func Test_setDefault(t *testing.T) {
 			Host: "",
 			Port: 0,
 			Provider: &config.AMQPProvider{
-				Auth: &config.AMQPAuth{
-					Username: "",
-					Password: "",
+				AMQPIO: &config.AMQPIO{
+					Auth: &config.AMQPAuth{
+						Username: "",
+						Password: "",
+					},
+					AddressName: "",
+					QueueName:   "",
 				},
-				AddressName: "",
-				QueueName:   "",
+				Message: &config.MessageHeader{
+					Durable: false,
+				},
 			},
 			Consumer: &config.AMQPConsumer{
 				Auth: &config.AMQPAuth{

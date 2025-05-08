@@ -19,11 +19,19 @@ type AMQP struct {
 	Consumer *AMQPConsumer `yaml:"consumer"`
 }
 
-type AMQPProvider = amqpIO
+type AMQPProvider struct {
+	*AMQPIO `yaml:",inline"`
 
-type AMQPConsumer = amqpIO
+	Message *MessageHeader `yaml:"message"`
+}
 
-type amqpIO struct {
+type MessageHeader struct {
+	Durable bool `yaml:"durable"`
+}
+
+type AMQPConsumer = AMQPIO
+
+type AMQPIO struct {
 	Auth *AMQPAuth `yaml:"auth"`
 	// AddressName is the name of the address where messages are sent.
 	// If the value is empty, it will use a random name as address name.
