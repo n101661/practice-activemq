@@ -54,11 +54,14 @@ func main() {
 	for {
 		<-ticker.C
 
-		msg := "ping" + strconv.Itoa(counter)
-		if err := sender.Send(ctx, amqp.NewMessage([]byte(msg)), nil); err != nil {
+		text := "ping" + strconv.Itoa(counter)
+		msg := amqp.Message{
+			Value: text,
+		}
+		if err := sender.Send(ctx, &msg, nil); err != nil {
 			log.Fatalf("failed to send message: %v", err)
 		}
-		log.Printf("sent a message [%s]\n", msg)
+		log.Printf("sent a message [%s]\n", text)
 		counter++
 	}
 }

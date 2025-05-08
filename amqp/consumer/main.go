@@ -52,9 +52,9 @@ func main() {
 		if err != nil {
 			log.Fatalf("failed to receive message: %v", err)
 		}
-		for _, data := range msg.Data {
-			log.Printf("got `%s`\n", string(data))
-		}
+
+		log.Printf("got `%v`\n", msg.Value)
+
 		if err = receiver.AcceptMessage(ctx, msg); err != nil {
 			log.Fatalf("failed to ack message: %v", err)
 		}
