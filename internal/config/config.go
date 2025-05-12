@@ -12,11 +12,17 @@ type Config struct {
 }
 
 type AMQP struct {
-	Host string `yaml:"host"`
-	Port int    `yaml:"port"`
+	Host string     `yaml:"host"`
+	Port int        `yaml:"port"`
+	SSL  *SSLConfig `yaml:"ssl"`
 
 	Provider *AMQPProvider `yaml:"provider"`
 	Consumer *AMQPConsumer `yaml:"consumer"`
+}
+
+type SSLConfig struct {
+	Enable       bool   `yaml:"enable"`
+	AppendedCert string `yaml:"appendCert"`
 }
 
 type AMQPProvider struct {

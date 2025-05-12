@@ -26,8 +26,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	conn, err := amqp.Dial(context.Background(), fmt.Sprintf("amqp://%s:%d", cfg.Host, cfg.Port), &amqp.ConnOptions{
-		SASLType: amqp.SASLTypePlain(cfg.Consumer.Auth.Username, cfg.Consumer.Auth.Password),
+	scheme, tlsConfig, err := utils.ParseSSLConfig(cfg.SSL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	conn, err := amqp.Dial(context.Background(), fmt.Sprintf("%s://%s:%d", scheme, cfg.Host, cfg.Port), &amqp.ConnOptions{
+		SASLType:  amqp.SASLTypePlain(cfg.Consumer.Auth.Username, cfg.Consumer.Auth.Password),
+		TLSConfig: tlsConfig,
 	})
 	if err != nil {
 		log.Fatalf("failed to connect to MQ using AMQP: %v", err)
@@ -69,6 +75,9 @@ func loadConfigAndValidate(path string) (*config.AMQP, error) {
 
 	if cfg == nil || cfg.AMQP == nil {
 		return nil, fmt.Errorf("missing amqp config")
+	}
+	if cfg.AMQP.SSL == nil {
+		cfg.AMQP.SSL = &config.SSLConfig{}
 	}
 	if cfg.AMQP.Consumer == nil {
 		return nil, fmt.Errorf("missing amqp.consumer config")

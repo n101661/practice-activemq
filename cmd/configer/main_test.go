@@ -14,6 +14,10 @@ func Test_setDefault(t *testing.T) {
 		AMQP: &config.AMQP{
 			Host: "",
 			Port: 0,
+			SSL: &config.SSLConfig{
+				Enable:       false,
+				AppendedCert: "",
+			},
 			Provider: &config.AMQPProvider{
 				AMQPIO: &config.AMQPIO{
 					Auth: &config.AMQPAuth{
